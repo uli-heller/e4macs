@@ -127,6 +127,25 @@ Installing From The Update Site On GitHub
 * Software Updates - Restart Now?
     * Yes
 
+Issues
+------
+
+### Ctrl-W Closes The Active Window
+
+When editing a java source file, I typically mark some portions and press Ctrl-W to cut this.
+Unfortunately, with Luna/Emacs+ pressing Ctrl-W closes the active window instead (this is similar
+to Chrome Browser: Ctrl-W closes the active tab there).
+
+I fixed this by:
+
+* Window - Preferences
+* Preferences
+    * General - Keys
+    * type filter text: Ctrl+W
+    * Select "Close Ctrl+W In Windows ..."
+    * Unbind Command
+    * OK
+
 Appendix
 --------
 

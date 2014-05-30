@@ -68,7 +68,7 @@ Build The Update Site
     * Save
     * Build All
 
-Package the update file
+Package The Update File
 -----------------------
 
 Open a command line window and do this:
@@ -81,3 +81,13 @@ You can install the zip file within eclipse via
 
 * Help - Install New Software...
 * Add - Archive...
+
+Doing A Release On GitHub
+-------------------------
+
+* Create a tag on GitHub - for example v0.1-pre
+* Pull the tag: `git pull --tags`
+* Checkout the tag: `git checkout v0.1-pre`
+* Within Eclipse: Build The Update Site (see above for details)
+* Package The Update File: `cd Emacs+Update; zip -r /tmp/emacs-plus-v0.1-pre.zip .`
+* Attach the Update File To The Github Tag/Release

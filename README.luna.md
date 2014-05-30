@@ -53,3 +53,31 @@ Switch To The Dev Branch
 * Create Branch
     * Branch name: dev
     * Finish
+
+Build The Update Site
+---------------------
+
+* Within 'Project Explorer' select 'Emacs+Update'
+* Open 'site.xml'
+* site.xml
+    * Synchronize...
+* Feature Properties Synchronization
+    * Synchronize all features on the size
+    * Finish
+* site.xml
+    * Save
+    * Build All
+
+Package the update file
+-----------------------
+
+Open a command line window and do this:
+
+* `cd e4macs`
+* `cd Emacs+Update`
+* `zip -r /tmp/emacs+-dev-20140530.zip .`
+
+You can install the zip file within eclipse via
+
+* Help - Install New Software...
+* Add - Archive...

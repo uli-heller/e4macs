@@ -91,3 +91,38 @@ Doing A Release On GitHub
 * Within Eclipse: Build The Update Site (see above for details)
 * Package The Update File: `cd Emacs+Update; zip -r /tmp/emacs-plus-v0.1-pre.zip .`
 * Attach the Update File To The Github Tag/Release
+
+Hosting The Update Site On GitHub
+---------------------------------
+
+* Build The Update Site (see above for details)
+* Create a folder named "update-site"
+* Copy The Update Site into the folder: `cp -a Emacs+Update/. update-site/.`
+* Delete the eclipse project and the gitignore files: `rm -f update-site/.{gitignore,project}`
+* Add the folder to the git repo, commit it and push it to GitHub:
+    * `git add update-site`
+    * `git commit -m "Created the update site"`
+    * `git push`
+
+Installing From The Update Site On GitHub
+-----------------------------------------
+
+* Help - Install New Software...
+* Install
+    * Add...
+* Add Repository
+    * Name: EmacsPlus-uli-lunatest
+    * Location: https://github.com/uli-heller/e4macs/raw/uli-lunatest/update-site
+    * OK
+* Install - Available Software
+    * Select All
+    * Next>
+* Install - Install Details
+    * Next>
+* Install - Review Licenses
+    * I accept the terms of the license agreement
+    * Finish
+* Security Warning
+    * OK
+* Software Updates - Restart Now?
+    * Yes

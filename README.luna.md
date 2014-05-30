@@ -126,3 +126,26 @@ Installing From The Update Site On GitHub
     * OK
 * Software Updates - Restart Now?
     * Yes
+
+Appendix
+--------
+
+### Posting 2014-05-30
+
+I've forked the repo and started to do some initial tests on Linux.
+
+For those who'd like to start testing fast, I've created an update-site on GitHub:
+
+* https://github.com/uli-heller/e4macs/raw/uli-lunatest/update-site
+
+Please use the update site on your own risk, I cannot guarantee that it works, although it does work for me on Ubuntu-12.04.
+A description on what I did is available on GitHub, too:
+
+* https://github.com/uli-heller/e4macs/blob/uli-lunatest/README.luna.md
+
+So far, I'm quite happy. Even the keyboard macros seem to work on eclipse-jee-luna-RC1 (4.4.0RC1).
+I'll do some more tests within the next couple of days. I'll use it on Windows 7, too. For all my tests, I'll use eclipse-jee-luna-RC1.
+
+Thanks a lot for providing this eclipse extension!
+
+Best regards, Uli

@@ -136,7 +136,28 @@ When editing a java source file, I typically mark some portions and press Ctrl-W
 Unfortunately, with Luna/Emacs+ pressing Ctrl-W closes the active window instead (this is similar
 to Chrome Browser: Ctrl-W closes the active tab there).
 
-I fixed this by:
+I tried this without success:
+
+```
+diff --git a/Emacs+/plugin.xml b/Emacs+/plugin.xml
+index aa23573..d3801ed 100755
+--- a/Emacs+/plugin.xml
++++ b/Emacs+/plugin.xml
+@@ -3542,6 +3542,11 @@
+  <!-- **** Cut & Copy **** -->
+ 
+        <key
++               commandId="com.mulgasoft.emacsplus.consuleCut"
++               contextId="org.eclipse.ui.contexts.window"
++               schemeId="com.mulgasoft.emacsplusConfiguration"
++               sequence="Ctrl+W"/>
++       <key
+                commandId="com.mulgasoft.emacsplus.consoleCut"
+                contextId="org.eclipse.ui.console.ConsoleView"
+                schemeId="com.mulgasoft.emacsplusConfiguration"
+```
+
+My current workaround is this:
 
 * Window - Preferences
 * Preferences

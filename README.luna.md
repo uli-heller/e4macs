@@ -38,3 +38,18 @@ Within Eclipse, do this
     * Make sure all projects are selected
     * Search for nestes projects
     * Finish
+
+Switch To The Dev Branch
+------------------------
+
+* Within 'Project Explorer' select 'Emacs+'
+* Team - Switch to... - Other...
+* Branches
+    * Remote Tracking
+    * origin/dev
+    * Checkout...
+* Check out
+    * Checkout as New Local Branch
+* Create Branch
+    * Branch name: dev
+    * Finish

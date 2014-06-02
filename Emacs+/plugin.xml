@@ -179,6 +179,10 @@
 		contextId="org.eclipse.ui.textEditorScope"
 		schemeId="com.mulgasoft.emacsplusConfiguration"
 		sequence="Ctrl+M3+0" />
+	<key
+		contextId="org.eclipse.ui.contexts.window"
+		schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+		sequence="Ctrl+W"/>
   </extension>
    
  <!-- *************** ^U Kill Line Commands *************** -->

@@ -690,11 +690,6 @@
 		schemeId="com.mulgasoft.emacsplusConfiguration"
 		platform="cocoa"
 		sequence="M3+N"/>
-	<key
-		contextId="org.eclipse.jdt.ui.javaEditorScope"
-		schemeId="com.mulgasoft.emacsplusConfiguration"
-		platform="carbon"
-		sequence="M3+N"/>
   </extension>
         
 <!-- *************** Paragraph Commands *************** -->
@@ -1639,12 +1634,6 @@
 		contextId="org.eclipse.ui.contexts.window"
 		schemeId="com.mulgasoft.emacsplusConfiguration"
 		platform="cocoa"
-		sequence="CTRL+,"/>               
-	<key
-		commandId="org.eclipse.ui.navigate.previous"
-		contextId="org.eclipse.ui.contexts.window"
-		schemeId="com.mulgasoft.emacsplusConfiguration"
-		platform="carbon"
 		sequence="CTRL+,"/>               
   </extension>
 
@@ -3545,6 +3534,7 @@
 		
  <!-- **** Cut & Copy **** -->
 
+	<!-- Add in the console window versions -->
 	<key
 		commandId="com.mulgasoft.emacsplus.consoleCut"
 		contextId="org.eclipse.ui.console.ConsoleView"

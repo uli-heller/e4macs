@@ -15,6 +15,10 @@ import org.eclipse.ui.IEditorPart;
 
 import com.mulgasoft.emacsplus.Beeper;
 import com.mulgasoft.emacsplus.EmacsPlusUtils;
+import com.mulgasoft.emacsplus.commands.EmacsPlusCmdHandler;
+
+import static org.eclipse.e4.ui.workbench.modeling.EModelService.RIGHT_OF;
+import static org.eclipse.e4.ui.workbench.modeling.EModelService.BELOW;
 
 /**
  * Split the current window using the direction passed in the context
@@ -25,8 +29,18 @@ public class WindowSplitCmd extends E4WindowCmd {
 	
 	private static final float ratio = 0.5f;
 
+	public static int getDirection(boolean horizontal) {
+		return (horizontal ? RIGHT_OF : BELOW);
+	}
+	
 	@Execute
-	public Object execute(@Active MPart apart, @Active IEditorPart editor, @Named(E4CmdHandler.CMD_CTX_KEY)int cmd) {
+	public Object execute(@Active MPart apart, @Active IEditorPart editor, @Named(E4CmdHandler.CMD_CTX_KEY)int cmd, 
+			@Active EmacsPlusCmdHandler handler) {
+		if (handler.isUniversalPresent()) {
+			// convenience hack
+			// change setting without changing preference store
+			setSplitSelf(!isSplitSelf());
+		}
 		split(apart, editor, cmd);
 		return null;
 	}
@@ -39,7 +53,7 @@ public class WindowSplitCmd extends E4WindowCmd {
 	protected void split(MPart apart, IEditorPart editor, int location) {
 		try {
 			preSplit(apart, editor);
-			splitIt(apart, editor, location);
+			splitIt(apart, location);
 			reactivate(apart);
 		} catch (Exception e) {
 			Beeper.beep();
@@ -63,7 +77,7 @@ public class WindowSplitCmd extends E4WindowCmd {
 		}
 	}
 
-	private void splitIt(MPart apart, IEditorPart editor, int location) {
+	protected void splitIt(MPart apart, int location) {
 		PartAndStack ps = getParentStack(apart);
 		MElementContainer<MUIElement> pstack = ps.getStack();
 		if (pstack.getChildren().size() > 1) {

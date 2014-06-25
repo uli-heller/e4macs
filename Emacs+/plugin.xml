@@ -515,6 +515,19 @@
 	  </commandParameter>
     </command>
 
+	<command
+		categoryId="org.eclipse.ui.category.textEditor"
+		description="%reposition.command.description"
+		id="com.mulgasoft.emacsplus.repositionWindow"
+		name="%reposition.command.name">
+	  <commandParameter
+		id="universalArg"
+		name="Arg"
+		optional="true"
+		typeId="com.mulgasoft.emacsplus.Integer">
+	  </commandParameter>
+    </command>
+    
  	<!-- Emacs+ version that respects narrowed regions -->   
  	<command
 		categoryId="org.eclipse.ui.category.textEditor"
@@ -560,6 +573,9 @@
 		class="com.mulgasoft.emacsplus.commands.RecenterHandler"
 		commandId="com.mulgasoft.emacsplus.recenterTopBottom"/> 
 	<handler
+		class="com.mulgasoft.emacsplus.commands.RepositionHandler"
+		commandId="com.mulgasoft.emacsplus.repositionWindow"/> 
+	<handler
 		class="com.mulgasoft.emacsplus.commands.DeleteWhitespaceHandler"
 		commandId="com.mulgasoft.emacsplus.deleteTrailingWhitespace"/> 
   </extension>
@@ -591,6 +607,11 @@
 		contextId="org.eclipse.ui.contexts.window"
 		schemeId="com.mulgasoft.emacsplusConfiguration"
 		sequence="Ctrl+L"/>
+	<key
+		commandId="com.mulgasoft.emacsplus.repositionWindow"
+		contextId="org.eclipse.ui.contexts.window"
+		schemeId="com.mulgasoft.emacsplusConfiguration"
+		sequence="Ctrl+M3+L"/>
   </extension>
 
  <!-- ********************  Comment  ********************* -->        
@@ -1169,12 +1190,26 @@
 		categoryId="org.eclipse.ui.category.textEditor"
 		description="%splithorizontal.command.description" 
 		id="com.mulgasoft.emacsplus.splitHorizontalWindow"
-		name="%splithorizontal.command.name" />
+		name="%splithorizontal.command.name"> 
+	  <commandParameter
+		id="universalArg"
+		name="Arg"
+		optional="true"
+		typeId="com.mulgasoft.emacsplus.Integer">
+	  </commandParameter>
+	</command>
 	<command
 		categoryId="org.eclipse.ui.category.textEditor"
 		description="%splitvertical.command.description" 
 		id="com.mulgasoft.emacsplus.splitVerticalWindow"
-		name="%splitvertical.command.name" />
+		name="%splitvertical.command.name">
+	  <commandParameter
+		id="universalArg"
+		name="Arg"
+		optional="true"
+		typeId="com.mulgasoft.emacsplus.Integer">
+	  </commandParameter>
+	</command>
 	<command
 		categoryId="org.eclipse.ui.category.textEditor"
 		description="%joinwindow.command.description" 
@@ -1231,6 +1266,30 @@
 		typeId="com.mulgasoft.emacsplus.Integer">
 	  </commandParameter>
 	</command>
+	<command
+		categoryId="org.eclipse.ui.category.textEditor"
+		description="%windowswitchother.command.description"
+		id="com.mulgasoft.emacsplus.switchOtherWindow"
+		name="%windowswitchother.command.name">
+	  <commandParameter
+		id="universalArg"
+		name="Arg"
+		optional="true"
+		typeId="com.mulgasoft.emacsplus.Integer">
+	  </commandParameter>
+	</command>
+	<command
+		categoryId="org.eclipse.ui.category.textEditor"
+		description="%windowshowother.command.description"
+		id="com.mulgasoft.emacsplus.showOtherWindow"
+		name="%windowshowother.command.name">
+	  <commandParameter
+		id="universalArg"
+		name="Arg"
+		optional="true"
+		typeId="com.mulgasoft.emacsplus.Integer">
+	  </commandParameter>
+	</command>
 
   </extension>
   
@@ -1263,6 +1322,12 @@
 	<handler
 		class="com.mulgasoft.emacsplus.e4.commands.WindowEnlargeHandler"
 		commandId="com.mulgasoft.emacsplus.enlargeWindow"/>
+	<handler
+		class="com.mulgasoft.emacsplus.e4.commands.SwitchToBufferOtherHandler"
+		commandId="com.mulgasoft.emacsplus.switchOtherWindow"/>
+	<handler
+		class="com.mulgasoft.emacsplus.e4.commands.ShowBufferOtherHandler"
+		commandId="com.mulgasoft.emacsplus.showOtherWindow"/>
   </extension>
   
   <extension
@@ -1273,12 +1338,12 @@
 		schemeId="com.mulgasoft.emacsplusConfiguration"
 		sequence="CTRL+X 1"/>
 	<key
-		commandId="com.mulgasoft.emacsplus.splitHorizontalWindow"
+		commandId="com.mulgasoft.emacsplus.splitVerticalWindow"
 		contextId="org.eclipse.ui.contexts.window"
 		schemeId="com.mulgasoft.emacsplusConfiguration"
 		sequence="CTRL+X 2"/>
 	<key
-		commandId="com.mulgasoft.emacsplus.splitVerticalWindow"
+		commandId="com.mulgasoft.emacsplus.splitHorizontalWindow"
 		contextId="org.eclipse.ui.contexts.window"
 		schemeId="com.mulgasoft.emacsplusConfiguration"
 		sequence="CTRL+X 3"/>
@@ -1309,6 +1374,19 @@
 		contextId="org.eclipse.ui.textEditorScope"
 		schemeId="com.mulgasoft.emacsplusConfiguration"
 		sequence="CTRL+X }"/>
+		
+<!-- contextId="org.eclipse.ui.textEditorScope" -->
+		
+	<key
+		commandId="com.mulgasoft.emacsplus.switchOtherWindow"
+		contextId="org.eclipse.ui.contexts.window"
+		schemeId="com.mulgasoft.emacsplusConfiguration"
+		sequence="CTRL+X 4 B"/>
+	<key
+		commandId="com.mulgasoft.emacsplus.showOtherWindow"
+		contextId="org.eclipse.ui.textEditorScope"
+		schemeId="com.mulgasoft.emacsplusConfiguration"
+		sequence="CTRL+X 4 CTRL+O"/>
   </extension>
 
  <!-- *************** Other Window Operations *************** -->

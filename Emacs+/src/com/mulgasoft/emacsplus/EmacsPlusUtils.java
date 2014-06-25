@@ -13,7 +13,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -33,7 +32,6 @@ import org.eclipse.core.commands.Parameterization;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.commands.common.CommandException;
 import org.eclipse.core.commands.common.NotDefinedException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.bindings.Binding;
 import org.eclipse.jface.bindings.BindingManager;
@@ -61,6 +59,7 @@ import org.eclipse.ui.internal.WorkbenchPage;
 import org.eclipse.ui.internal.keys.BindingService;
 import org.eclipse.ui.keys.IBindingService;
 import org.eclipse.ui.part.MultiEditor;
+import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.mulgasoft.emacsplus.execute.KbdMacroSupport;
@@ -86,6 +85,8 @@ public class EmacsPlusUtils {
 	
 	// The assumption is that the position categories will be part of this document category
 	private static final String DOC_CAT = "__content_types_category";   									  //$NON-NLS-1$
+	// In Java at least, these point to collapsible regions in the doc as well as other things 
+	public static final String DOC_FNS = "__dflt_position_category";   									      //$NON-NLS-1$
 	// java specific comment
 	//	public static String JAVA_DOC = org.eclipse.jdt.ui.text.IJavaPartitions.JAVA_DOC;
 	// use javadoc string directly to avoid having a dependency of jdt.ui
@@ -131,11 +132,7 @@ public class EmacsPlusUtils {
 	private static final class MacCheck {  
 		static final boolean isMac = checkMac(); 
 	}
-	
-	private static final class e4Check {  
-		static final boolean isE4 = checkE4(); 
-	}
-	
+
 	// control whether to disable pre-edit of Non_Spacing_Marks: i.e. characters intended to be 
 	// combined with another character without taking up extra space (e.g. accents, umlauts, etc.) 
 	private static boolean disableOptionIMEPreferenece = getPreferenceBoolean(EmacsPlusPreferenceConstants.P_DISABLE_INLINE_EDIT);
@@ -163,15 +160,6 @@ public class EmacsPlusUtils {
 		return "cocoa".equals (SWT.getPlatform ());	//$NON-NLS-1$
 	}
 
-	public static boolean isE4() {
-		return e4Check.isE4; 
-	}
-	
-	private static boolean checkE4() {
-		// More hackery - determine if we're 4.x or 3.x - is there a better way?
-		return Platform.getBundle("org.eclipse.e4.ui.workbench") != null;	//$NON-NLS-1$ 
-	}
-	
 	public static void setOptionIMEPreferenece(boolean optionIMEPreferenece) {
 		disableOptionIMEPreferenece = optionIMEPreferenece;
 	}
@@ -181,11 +169,16 @@ public class EmacsPlusUtils {
 	}
 
 	public static String getTypeCategory(IDocument doc){
+		return getTypeCategory(doc, DOC_CAT);
+	}
+	
+	public static String getTypeCategory(IDocument doc, String cat){
 		String result = null;
 		String[] cats = doc.getPositionCategories();
-		for (int i = 0; i < cats.length; i++) {
-			if (cats[i].contains(DOC_CAT)) {
-				result = cats[i];
+		for (String icat : cats) {
+			if (icat.contains(cat)) {
+				result = icat;
+				break;
 			}
 		}
 		return result;
@@ -289,7 +282,7 @@ public class EmacsPlusUtils {
 	 * @param editor
 	 * @return the ITextEditor or null
 	 */
-	public static ITextEditor getTextEditor(IEditorPart editor) {
+	public static ITextEditor getActiveTextEditor(IEditorPart editor) {
 		ITextEditor result = null;
 		if (editor != null) {
 			if (editor instanceof ITextEditor) {
@@ -302,8 +295,54 @@ public class EmacsPlusUtils {
 					IEditorPart epart = ((MultiEditor) editor).getActiveEditor();
 					// trust but verify
 					if (epart != editor) {
-						result = getTextEditor(epart);
+						result = getActiveTextEditor(epart);
 					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * If we're a  multi-page editor, try to extract the text editor 
+	 * 
+	 * @param editor the selected editor
+	 * @param activate force the text editor to be the active page
+	 * @return a text editor or null
+	 */
+	public static ITextEditor getTextEditor(IEditorPart editor, boolean activate) {
+		ITextEditor result = null;
+		if (editor != null) {
+			if (editor instanceof ITextEditor) {
+				result = (ITextEditor) editor;
+			} else {
+				// this should retrieve the currently active editor from MultiPageEditors & etc.
+				result = (ITextEditor) editor.getAdapter(ITextEditor.class);
+				// dig further if multi type
+				if (result == null) {
+					if (editor instanceof MultiEditor) {
+						// this code is ancient - not sure if there are any plain MultiEditors anymore
+						IEditorPart epart = ((MultiEditor) editor).getActiveEditor();
+						// potentially recurse
+						if (epart != editor) {
+							result = getTextEditor(epart, activate);
+						}
+					} else if (editor instanceof MultiPageEditorPart) {
+						MultiPageEditorPart med = (MultiPageEditorPart)editor;
+						IEditorPart[] eds = med.findEditors(med.getEditorInput());
+						for (IEditorPart ep : eds) {
+							if (ep instanceof ITextEditor) {
+								result = (ITextEditor)ep;
+								if (activate) {
+									med.setActiveEditor(result);
+									IWorkbenchPage wpage = getWorkbenchPage();
+									wpage.bringToTop(result);
+									wpage.activate(result);
+								}
+								break;
+							}
+						}
+					} 
 				}
 			}
 		}
@@ -315,9 +354,6 @@ public class EmacsPlusUtils {
 		IEditorReference[] result = null;
 		if (page != null && page instanceof WorkbenchPage) {
 			result = ((WorkbenchPage) page).getSortedEditors();			
-		}
-		if (EmacsPlusUtils.isE4()) {
-			Collections.reverse(Arrays.asList(result));
 		}
 		return result;
 	}
@@ -584,7 +620,7 @@ public class EmacsPlusUtils {
 		IWorkbenchPage page = getWorkbenchPage();
 		if (page != null) {
 			IEditorPart activeEditor = page.getActiveEditor();
-			result = getTextEditor(activeEditor);
+			result = getActiveTextEditor(activeEditor);
 		}
 		return result;
 	}

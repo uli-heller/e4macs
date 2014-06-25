@@ -517,7 +517,7 @@ public class MarkUtils {
 
 		public void preExecute(String commandId, ExecutionEvent event) {
 			try {
-				ITextEditor editor = EmacsPlusUtils.getTextEditor(HandlerUtil.getActiveEditorChecked(event));
+				ITextEditor editor = EmacsPlusUtils.getActiveTextEditor(HandlerUtil.getActiveEditorChecked(event));
 				if (editor != null) {
 					MarkUtils.setTagMark(editor,-1);
 				}
@@ -719,6 +719,10 @@ public class MarkUtils {
 				setCursorOffset(editor, offset);
 			}
 		}
+	}
+
+	public static int model2WidgetOffset(ITextEditor editor, int pos) {
+		return MarkUtils.model2WidgetOffset(findSourceViewer(editor), pos);
 	}
 
 	// Totally Evil

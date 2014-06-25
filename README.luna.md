@@ -11,6 +11,7 @@ Preparations
 ------------
 
 * Download and install eclipse-jee-luna-RC1
+  Note: luna-RC2, RC3 and R don't work at the moment!
 * Start eclipse using a fresh workspace
 * Close the Welcome Screen
 

@@ -1,5 +1,5 @@
 #!/bin/sh
 (
   cd update-site
-  zip -r /tmp/emacs-plus-v4.1.0-pre-20140727.zip *
+  zip -r /tmp/emacs-plus-v4.1.1-20140729.zip *
 )
